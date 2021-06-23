@@ -34,7 +34,7 @@ lien = 0
 
 while (choix != 0):
     choix = menu()
-    print("\n\n")
+    print("\n")
 
     if choix == 1 :
         # afficher toutes les vidéo d'un drive avec un numéro
@@ -75,14 +75,11 @@ while (choix != 0):
         print("0 Retour")
         lien = input("Votre choix :")
         lien = isNumber(lien)
-        if lien in l:
-            print("\nAppuyez sur n'importe quelle touche quand vous êtes prêt...")
-            input()
-
+        #if lien in l:
+        if not lien == 0:
             # lancer la video
             print("Lancement de la vidéo...")
-            filename = "CodeLyoko.mp4"
-            video = moviepy.editor.VideoFileClip(filename)
-            fileduration = int(video.duration)
+            filename = "output.wav"
             os.system("start " + filename)
-            time.sleep(fileduration)
+
+        print("\n")
