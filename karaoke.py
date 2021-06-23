@@ -1,5 +1,9 @@
 import os
+import time
+
 import moviepy.editor
+import sounddevice as sd
+from scipy.io.wavfile import write
 
 
 def isNumber(str):
@@ -46,14 +50,20 @@ while (choix != 0):
         #if lien in l:
             print("\nAppuyez sur n'importe quelle touche quand vous êtes prêt...")
             input()
+
+            #lancer la video
+            print("Lancement de la vidéo...")
             filename = "CodeLyoko.mp4"
             video = moviepy.editor.VideoFileClip(filename)
             fileduration = int(video.duration)
             os.system("start "+filename)
-            print(fileduration)
-            #lancer la chanson
+
             #en enregistrant derrière
-            pass
+            print("Enregistrement de l'audio...")
+            fs = 44100  # Sample rate
+            myrecording = sd.rec(int(fileduration * fs), samplerate=fs, channels=2)
+            sd.wait()  # Wait until recording is finished
+            write('output.wav', fs, myrecording)  # Save as WAV file
 
     if choix == 2 :
         # afficher toutes les vidéo d'un drive avec un numéro
@@ -66,5 +76,13 @@ while (choix != 0):
         lien = input("Votre choix :")
         lien = isNumber(lien)
         if lien in l:
-            #lancer l'enregistrement
-            pass
+            print("\nAppuyez sur n'importe quelle touche quand vous êtes prêt...")
+            input()
+
+            # lancer la video
+            print("Lancement de la vidéo...")
+            filename = "CodeLyoko.mp4"
+            video = moviepy.editor.VideoFileClip(filename)
+            fileduration = int(video.duration)
+            os.system("start " + filename)
+            time.sleep(fileduration)
