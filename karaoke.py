@@ -1,4 +1,5 @@
 import os
+import moviepy.editor
 
 
 def isNumber(str):
@@ -46,7 +47,10 @@ while (choix != 0):
             print("\nAppuyez sur n'importe quelle touche quand vous êtes prêt...")
             input()
             filename = "CodeLyoko.mp4"
+            video = moviepy.editor.VideoFileClip(filename)
+            fileduration = int(video.duration)
             os.system("start "+filename)
+            print(fileduration)
             #lancer la chanson
             #en enregistrant derrière
             pass
