@@ -1,6 +1,4 @@
-import pathlib
-
-from flask import Flask, jsonify, request
+from flask import Flask
 
 app = Flask(__name__)
 

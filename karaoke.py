@@ -1,13 +1,10 @@
 import os
-import time
-import dropbox
 
 import moviepy.editor
 import sounddevice as sd
 from scipy.io.wavfile import write
 
 from API_Dropbox import TransferData
-from app import app
 
 
 def isNumber(str):
@@ -40,14 +37,11 @@ lien = 0
 while choix != 0:
     choix = menu()
     print("\n")
-
+    access_token = '2DbT1mnMaDYAAAAAAAAAAZkeflv7EwawsiWM6daVjQuQ5khgM24vmOOlXjuw_V0d'
+    transferData = TransferData(access_token)
     if choix == 1:
         # afficher toutes les vidéo d'un drive avec un numéro
-        l = []
-        for i in range(0):  # le nombre de fichier
-            n = i + 1
-            print(n + "nom de la chanson")
-            l.append(n)
+        transferData.file_name_songs()
         print("0 Retour")
         lien = input("Votre choix :")
         lien = isNumber(lien)
@@ -58,33 +52,32 @@ while choix != 0:
 
             # lancer la video
             print("Lancement de la vidéo...")
-            filename = "CodeLyoko.mp4"
-            video = moviepy.editor.VideoFileClip(filename)
+            filename = "CodeLyoko"
+            extention = ".mp4"
+            video = moviepy.editor.VideoFileClip(filename + extention)
             fileduration = int(video.duration)
-            os.system("start " + filename)
+            os.system("start " + filename + extention)
             # en enregistrant derrière
             print("Enregistrement de l'audio...")
             fs = 44100  # Sample rate
             myrecording = sd.rec(int(fileduration * fs), samplerate=fs, channels=2)
             sd.wait()  # Wait until recording is finished
-            write('output.wav', fs, myrecording)  # Save as WAV file
+            write(filename + '.wav', fs, myrecording)  # Save as WAV file
 
-            access_token = '2DbT1mnMaDYAAAAAAAAAAZkeflv7EwawsiWM6daVjQuQ5khgM24vmOOlXjuw_V0d'
-            transferData = TransferData(access_token)
-
-            file_from = 'output.wav'  # Ou se situe le fichier
-            file_to = '/enregistrement'  # Le path en entier sur Dropbox
+            file_from = filename + '.wav'  # Ou se situe le fichier
+            file_to = '/enregistrements/' + filename  # Le path en entier sur Dropbox
 
             # API v2
             transferData.upload_file(file_from, file_to)
+            transferData.wait()
+            if os.path.exists(filename + extention):
+                os.remove(filename + extention)
+            if os.path.exists(filename + '.wav'):
+                os.remove(filename + '.wav')
 
     if choix == 2:
         # afficher toutes les vidéo d'un drive avec un numéro
-        l = []
-        for i in range(0):  # le nombre de fichier
-            n = i + 1
-            print(n + "nom de la video")
-            l.append(n)
+        transferData.file_name_recording()
         print("0 Retour")
         lien = input("Votre choix :")
         lien = isNumber(lien)
